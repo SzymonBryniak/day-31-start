@@ -31,8 +31,7 @@ canvas = tkinter.Canvas(window, width=450, height=305, bg=BACKGROUND_COLOR)
 
 counter_english = [0]
 counter_french = [0]
-
-  # todo: take out words guessed correctly
+# todo: take out words guessed correctly
 
 
 def start_card(del_text=0):
