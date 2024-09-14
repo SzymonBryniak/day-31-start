@@ -16,7 +16,6 @@ class FlashCards(tkinter.Tk):
     def __init__(self):
         super().__init__()
         # self.window = Tk()
-
         self.title('Flashly')
         self.config(pady=20, padx=20, bg=BACKGROUND_COLOR)
         self.geometry('496x396')
