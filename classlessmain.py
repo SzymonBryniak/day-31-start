@@ -29,6 +29,11 @@ new_button_right = ImageTk.PhotoImage(resized_button_right)
 
 canvas = tkinter.Canvas(window, width=450, height=305, bg=BACKGROUND_COLOR)
 
+counter_english = [0]
+counter_french = [0]
+
+  # todo: take out words guessed correctly
+
 
 def start_card(del_text=0):
     canvas.create_image(220, 150, image=front_image)
@@ -37,6 +42,7 @@ def start_card(del_text=0):
 
 
 def front_card():
+    global counter_english
     canvas.create_image(220, 150, image=front_image)
     with open('./data/french_words.csv') as words:
         title_word = words.readline()
@@ -46,10 +52,12 @@ def front_card():
         print(word)
 
         canvas.create_text(220, 100, text=title, fill="black", font=('Helvetica 15 bold'))
-        canvas.create_text(220, 130, text=word[0].split(',')[1].strip('\n'), fill="black", font=('Helvetica 15 bold'))
+        canvas.create_text(220, 130, text=word[counter_english[-1]].split(',')[1].strip('\n'), fill="black", font=('Helvetica 15 bold'))
+        counter_english.append(len(counter_english)+1)
 
 
 def back_card():
+    global counter_french
     canvas.create_image(220, 150, image=back_image)
     with open('./data/french_words.csv') as words:
         title_word = words.readline()
@@ -59,8 +67,8 @@ def back_card():
         print(word)
 
         canvas.create_text(220, 100, text=title, fill="black", font=('Helvetica 15 bold'))
-        canvas.create_text(220, 130, text=word[0].split(',')[0].strip('\n'), fill="black", font=('Helvetica 15 bold'))
-
+        canvas.create_text(220, 130, text=word[counter_french[-1]].split(',')[0].strip('\n'), fill="black", font=('Helvetica 15 bold'))
+        counter_french.append(len(counter_french)+1)
 
 
 button_left = Button(image=new_button_left, highlightthickness=0, command=back_card)
