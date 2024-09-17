@@ -59,36 +59,45 @@ def english_card(excl):
         word = words.readlines()
         print(word)
     random_index = random.choice([i for i in range(len(word)) if i not in to_learn_df])
-    random_word = word[random_index].split(',')[1].strip('\n')
-    print(random_index)
+    random_word_to_exclude = word[random_index]
+    random_word = random_word_to_exclude.split(',')[1].strip('\n')
+
+    # print(random_index)
+
     canvas.create_text(220, 100, text=title, fill="black", font=('Helvetica 15 bold'))
     canvas.create_text(220, 130, text=random_word, fill="black", font=('Helvetica 15 bold'))
     counter_english.append(len(counter_english)+1)
 
-    window.after(3000, lambda: french_card(excl, random_word))
+    french_word_to_learn = random_word_to_exclude.strip('\n').split(',')[0]
+    english_word_to_learn = random_word_to_exclude.strip('\n').split(',')[1]
+    to_learn_df.loc[len(exclude), 'French'] = french_word_to_learn
+    to_learn_df.loc[len(exclude), 'English'] = english_word_to_learn
+    print(to_learn_df)
+
+    if excl == 1:
+        to_learn_df.drop(index=to_learn_df.index[-1], axis=0, inplace=True)
+    to_learn_df.to_csv('./data/excluded.csv')
+    window.after(3000, lambda: french_card())
 
 
-def french_card(excl, word):
+def french_card():
     global counter_french, random_index, exclude, to_learn_df
     canvas.create_image(220, 150, image=front_image)
     with open('./data/french_words.csv') as words:
         title_word = words.readline()
         title = title_word.split(',')[0]
         word = words.readlines()
-    if excl == 1:  # excluded list
+        word_object = word[random_index].split(',')[0].strip('\n')
+        print(word_object)
 
         exclude.append(random_index)
-        print(exclude)
-        french_word_to_learn = word[random_index].strip('\n').split(',')[0]
-        english_word_to_learn = word[random_index].strip('\n').split(',')[1]
-        to_learn_df.loc[len(exclude), 'French'] = french_word_to_learn
-        to_learn_df.loc[len(exclude), 'English'] = english_word_to_learn
-        print(to_learn_df)
+        # print(exclude)
+
         # to_learn_df.update(word_to_learn)
     canvas.create_text(220, 100, text=title, fill="black", font=('Helvetica 15 bold'))
-    canvas.create_text(220, 130, text=word[random_index].split(',')[0].strip('\n'), fill="black", font=('Helvetica 15 bold'))
+    canvas.create_text(220, 130, text=word_object, fill="black", font=('Helvetica 15 bold'))
     counter_french.append(len(counter_french)+1)
-    print(excl)
+    # print(excl)
 
     group = random.choice([i for i in range(200, 1000) if i not in exclude])
 
